@@ -10,7 +10,7 @@ The file includes:
 * deployment images : Screenshots of the results of deployment.
 * create.sh : Cloudformation create stack script. 
 * update.sh : Cloudformation update stack script.
-* destroy.sh : Cloudformation delete stack script.
+* delete.sh : Cloudformation delete stack script.
 
 
 
