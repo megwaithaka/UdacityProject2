@@ -35,7 +35,7 @@ Parameters:
         Description: 
             "The EC2 instance type of general purpose"
         Type: String
-        AllowedValues: [t2.medium, t3.small, t3.nano, t3.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge]
+        AllowedValues: [t2.medium, t3.small, t3.nano, t1.micro, t3.small, t3.medium, t3.large, t3.xlarge, t3.2xlarge]
 
 
 Resources:
@@ -101,6 +101,7 @@ Resources:
         Properties: 
           VpcId: !Ref VPC 
           InternetGatewayId: !Ref InternetGateway
+        DeletionPolicy: Retain
 
     NatGateway1EIP:
         Type: AWS::EC2::EIP
@@ -141,6 +142,7 @@ Resources:
             RouteTableId: !Ref PublicRouteTable
             DestinationCidrBlock: 0.0.0.0/0
             GatewayId: !Ref InternetGateway
+        DeletionPolicy: Retain
     
     PublicSubnet1RouteTableAssociation:
         Type: AWS::EC2::SubnetRouteTableAssociation
@@ -168,6 +170,7 @@ Resources:
             RouteTableId: !Ref PrivateRouteTable1
             DestinationCidrBlock: 0.0.0.0/0
             NatGatewayId: !Ref NatGateway1
+        DeletionPolicy: Retain
 
     PrivateSubnet1RouteTableAssociation:
         Type: AWS::EC2::SubnetRouteTableAssociation
@@ -189,6 +192,7 @@ Resources:
             RouteTableId: !Ref PrivateRouteTable2
             DestinationCidrBlock: 0.0.0.0/0
             NatGatewayId: !Ref NatGateway2
+        DeletionPolicy: Retain
 
     PrivateSubnet2RouteTableAssociation:
         Type: AWS::EC2::SubnetRouteTableAssociation
@@ -211,7 +215,7 @@ Resources:
                     Action:
                     - sts:AssumeRole
             Path: "/"
-
+           
     RolePolicies:
         Type: AWS::IAM::Policy
         Properties:
@@ -225,10 +229,12 @@ Resources:
                     -   s3:Get*
                     -   s3:List*
                     Resource: 
-                    -   arn:aws:s3:::udacity-demo-1
-                    -   arn:aws:s3:::udacity-demo-1/*
+                    -   arn:aws:s3:::cf-templates-uaon2ygih33g-us-east-1
+                    -   arn:aws:s3:::cf-templates-uaon2ygih33g-us-east-1/*
+                  
             Roles:
             -   Ref: UdacityS3ReadOnlyEC2
+        DeletionPolicy: Retain
 
     ProfileWithRolesForOurApp:
         Type: AWS::IAM::InstanceProfile
@@ -276,18 +282,7 @@ Resources:
     WebAppLaunchConfig: 
         Type: AWS::AutoScaling::LaunchConfiguration
         Properties:
-            UserData:
-                Fn::Base64: !Sub |
-                    #!/bin/bash
-                    apt-get update -y
-                    apt-get install unzip awscli -y
-                    apt-get install apache2 -y
-                    systemctl start apache2.service
-                    cd /var/www/html
-                    aws s3 cp s3://udacity-demo-1/udacity.zip .
-                    unzip -o udacity.zip
-            ImageId: ami-031e556ebe95c007e
-            KeyName: UdacityLondonKP
+            ImageId: ami-08fdec01f5df9998f
             IamInstanceProfile: !Ref ProfileWithRolesForOurApp
             SecurityGroups:
             -   Ref: WebServerSecGroup
@@ -295,8 +290,8 @@ Resources:
             BlockDeviceMappings:
             -   DeviceName: "/dev/sdk"
                 Ebs:
-                    VolumeSize: '10' #10GB
-
+                    VolumeSize: '10' #10GB                   
+                    
     WebAppTargetGroup:
         Type: AWS::ElasticLoadBalancingV2::TargetGroup
         Properties:
