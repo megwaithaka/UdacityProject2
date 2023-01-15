@@ -2,7 +2,7 @@
 [
     {
         "ParameterKey": "EnvironmentName",
-        "ParameterValue": "UdagramProject"
+        "ParameterValue": "Project2Udagram"
     },
     {
         "ParameterKey": "VpcCIDR",
@@ -26,6 +26,5 @@
     },
     {
         "ParameterKey": "InstanceType",
-        "ParameterValue": "t2.medium"
+        "ParameterValue": "t1.micro"
     }
-]
