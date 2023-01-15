@@ -8,6 +8,9 @@ The file includes:
 * networkandserver.yml : Udagram Project's CloudFormation script.
 * networkandserver.json : Udagram Project's CloudFormation script parameters
 * deployment images : Screenshots of the results of deployment.
+* create.sh : Cloudformation create stack script. 
+* update.sh : Cloudformation update stack script.
+* destroy.sh : Cloudformation delete stack script.
 
 
 
