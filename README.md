@@ -12,5 +12,9 @@ The file includes:
 * update.sh : Cloudformation update stack script.
 * delete.sh : Cloudformation delete stack script.
 
+To Deploy : > ./create.sh UdacityUdagram networkandserver.yml networkandserver.json
+
+website LB-EC2-s3 connectivity check - http://udaci-webap-126yfq63nfyjq-1520521550.us-east-1.elb.amazonaws.com/
+
 
 
